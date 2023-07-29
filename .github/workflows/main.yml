@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Scan the repo before checkout
-        uses: ./.github/workflows/trivy.yml
-
       # Include other workflow files
       - name: Build spring-petclinic using gradle
         uses: ./.github/workflows/gradle.yml
+
+      - name: Scan the repo after checkout
+        uses: ./.github/workflows/trivy.yml
