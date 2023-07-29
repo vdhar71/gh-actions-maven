@@ -1,0 +1,21 @@
+name: Main Workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Job
+    runs-on: ubuntu-23.04
+
+    steps:
+      - name: Scan the repo before checkout
+        uses: ./.github/workflows/trivy.yml
+
+      # Include other workflow files
+      - name: Build spring-petclinic using gradle
+        uses: ./.github/workflows/gradle.yml
