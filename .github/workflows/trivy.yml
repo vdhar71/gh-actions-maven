@@ -9,14 +9,14 @@ jobs:
     name: Build
     runs-on: ubuntu-20.04
     steps:
-    - name: Docker login
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run : |
-        # Verify environment variables
-        echo "DOCKER_USERNAME: $DOCKER_USERNAME   DOCKER_PASSWORD: $DOCKER_PASSWORD"
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
+    #- name: Docker login
+    #  env:
+    #    DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    #    DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    #  run : |
+    #    # Verify environment variables
+    #    echo "DOCKER_USERNAME: $DOCKER_USERNAME   DOCKER_PASSWORD: $DOCKER_PASSWORD"
+    #    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
 
     - name: Checkout code
       uses: actions/checkout@v3
