@@ -3,16 +3,16 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: trivy
+name: Trivy Repository Scan spring-petclinic with Maven
 
 on:
   push:
-    branches: [ "main", "ghwf" ]
+    branches: [ "main" ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main", "ghwf" ]
+    branches: [ "main" ]
   #schedule:
-   # - cron: '27 3 * * 2'
+  #  - cron: '*/1440 * * * *'
 
 permissions:
   contents: read
@@ -28,22 +28,42 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
+      - name: Create SARIF Files Directory
+        run: mkdir -p sarif-files
 
+      - name: Run Trivy vulnerability scanner in repository mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          category: 'repository-scanning'
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-repo-scan-results.sarif'
+          #severity: 'CRITICAL,HIGH,MEDIUM'
+
+      - name: Copy repository scan results to sarif-files directory
+        run: cp trivy-repo-scan-results.sarif sarif-files
+        
       - name: Build an image from Dockerfile
         run: |
           docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
 
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy vulnerability scanner in image mode
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
+          category: 'image-scanning'
           image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
-          output: 'trivy-results.sarif'
-          #severity: 'CRITICAL,HIGH'
+          output: 'trivy-img-scan-results.sarif'
+          #severity: 'CRITICAL,HIGH,MEDIUM'
+
+      - name: Copy image scan results to sarif-files directory
+        run: cp trivy-img-scan-results.sarif sarif-files
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: 'trivy-results.sarif'
-
+          category: 'trivy-scanning'
+          sarif_file: sarif-files
