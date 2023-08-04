@@ -16,7 +16,7 @@ jobs:
       run : |
         # Verify environment variables
         echo "DOCKER_USERNAME: $DOCKER_USERNAME   DOCKER_PASSWORD: $DOCKER_PASSWORD"
-       echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
+        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
 
     - name: Checkout code
       uses: actions/checkout@v3
