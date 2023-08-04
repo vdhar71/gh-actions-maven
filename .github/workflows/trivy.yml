@@ -11,8 +11,8 @@ jobs:
     steps:
     - name: Docker login
       env:
-        DOCKER_USERNAME: ${{ secrets.dockerhub_username }}
-        DOCKER_PASSWORD: ${{ secrets.dockerhub_password }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run : |
         # Verify environment variables
         echo "DOCKER_USERNAME: $DOCKER_USERNAME   DOCKER_PASSWORD: $DOCKER_PASSWORD"
