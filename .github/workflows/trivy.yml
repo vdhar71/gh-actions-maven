@@ -13,7 +13,10 @@ jobs:
       env:
         DOCKER_USERNAME: ${{ secrets.dockerhub_username }}
         DOCKER_PASSWORD: ${{ secrets.dockerhub_password }}
-      run : docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" docker.io
+      run : |
+        # Verify environment variables
+        echo "DOCKER_USERNAME: $DOCKER_USERNAME   DOCKER_PASSWORD: $DOCKER_PASSWORD"
+        docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" docker.io
     - name: Checkout code
       uses: actions/checkout@v3
 
